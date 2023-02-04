@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 10.0f;
+    public int maxHealth = 100;
+    public int currentHealth;
 
-    private Rigidbody2D rigidbody2d;
+    public HealthBar healthBar;
 
-    private void Start()
+    void Start()
     {
-        rigidbody2d = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
-    private void Update()
+    void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamage(20);
+        }
+    }
 
-        Vector2 position = rigidbody2d.position;
-        position.x += horizontal * speed * Time.deltaTime;
-        position.y += vertical * speed * Time.deltaTime;
+    void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
 
-        rigidbody2d.MovePosition(position);
+        healthBar.SetHealth(currentHealth);
     }
 }
