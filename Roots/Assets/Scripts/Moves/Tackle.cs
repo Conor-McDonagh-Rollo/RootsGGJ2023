@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tackle : Move
 {
-    Tackle() : base(35, 95){}
+    Tackle() : base(35, 95, "Tackle"){}
 
     public override void callMove()
     {

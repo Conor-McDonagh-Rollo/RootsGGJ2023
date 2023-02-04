@@ -6,6 +6,8 @@ public class SaplingMonStats : MonoBehaviour
 {
     // I got these ranges from here: https://pokemondb.net/pokebase/175092/what-the-lowest-and-highest-value-in-stat-any-pokemon-can-have
 
+    public string monName;
+
     [Range(1.0f, 252.0f)]
     public int HP;
 

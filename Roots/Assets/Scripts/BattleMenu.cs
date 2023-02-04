@@ -2,11 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class BattleMenu : MonoBehaviour
 {
     private GameObject[] moveButtons;
     private GameObject[] battleButtons;
+    private GameObject turnText;
+
+    private SaplingMonStats[] fightingMon;
+
+    int attemptsToFlee = 1;
+
+    public void AddMon(SaplingMonStats[] t_mon)
+    {
+        fightingMon = t_mon;
+
+        for (int i = 0; i < moveButtons.Length; i++)
+        {
+            if (i != 4)
+            {
+                moveButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = fightingMon[0].learnedMoves[i].moveName;
+            }
+        }
+    }
 
     private void Start()
     {
@@ -18,6 +37,10 @@ public class BattleMenu : MonoBehaviour
         battleButtons[2] = GameObject.Find("Bag Button");
         battleButtons[3] = GameObject.Find("Run Button");
 
+        turnText = GameObject.Find("Player Reminder");
+        turnText.SetActive(false);
+
+        turnText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Bottom;
 
         int loopOneMore;
         for (int loop = 0; loop < 4; loop++)
@@ -36,12 +59,30 @@ public class BattleMenu : MonoBehaviour
 
     public void Run()
     {
+        // i got this calculation from here: https://bulbapedia.bulbagarden.net/wiki/Escape#Generation_III_and_IV
         // roll die to see if you escape,
+
+        int randomNumber = Random.Range(0, 255);
+        float oddsOfEscape = fightingMon[0].Speed * 128;
+
+        oddsOfEscape = Mathf.Abs(oddsOfEscape / fightingMon[1].Speed);
+
+        oddsOfEscape = oddsOfEscape + (30 * attemptsToFlee);
+
+        oddsOfEscape = oddsOfEscape % 256;
+
         
-        if (true) // if you pass the roll
+        if (oddsOfEscape > 255 || randomNumber < oddsOfEscape) // if you pass the roll
         {
-            SceneManager.LoadScene("Game"); // go back to the main game
+            StartCoroutine(DisplayMessage("You got away safely!"));
         }
+
+        else // u failed to escape!
+        {
+            StartCoroutine(DisplayMessage("You couldn't get away!"));
+        }
+
+
     }
 
     public void Fight()
@@ -88,5 +129,45 @@ public class BattleMenu : MonoBehaviour
     public void Move(int whichMove)
     {
         // A move on the mon is used. The move is chosen by the number passed in (ranging from 1-4)
+
+        StartCoroutine(DisplayMessage(fightingMon[0].monName + " uses " + fightingMon[0].learnedMoves[0].moveName + "!"));
+    }
+
+    public void Toggle(bool t_toggle)
+    {
+        for (int i = 0; i < moveButtons.Length; i++)
+        {
+            moveButtons[i].SetActive(t_toggle);
+        }
+
+        for (int i = 0; i < battleButtons.Length; i++)
+        {
+            battleButtons[i].SetActive(t_toggle);
+        }
+
+        turnText.SetActive(!t_toggle);
+    }
+        
+    IEnumerator DisplayMessage(string t_message)
+    {
+        Toggle(false);
+
+        TextMeshProUGUI text = turnText.GetComponent<TextMeshProUGUI>();
+
+        text.text = t_message;
+
+        yield return new WaitForSeconds(3);
+
+        if (t_message == "You got away safely!")
+        {
+            SceneManager.LoadScene("Game"); // go back to the main game
+        }
+
+        else
+        {
+            Toggle(true);
+        }
+
+        yield return null;
     }
 }

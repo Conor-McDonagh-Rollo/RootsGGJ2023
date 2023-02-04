@@ -97,11 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0acf7220014f8243a3e6aee631a224f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monName: SaplingMon
   HP: 1
   Attack: 0
   Defense: 0
-  SpAtk: 0
-  SpDef: 0
   Speed: 2
   learnedMoves:
   - {fileID: 0}
