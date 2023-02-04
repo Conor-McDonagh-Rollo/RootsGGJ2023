@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         }
 
         rb.velocity = new Vector2(horizontal, vertical) * speed;
-        camPos = Vector3.Lerp(cam.position, rb.position, camSpeed * Time.deltaTime);
+        camPos = Vector3.Lerp(cam.position, rb.position + (rb.velocity.normalized * 1.5f), camSpeed * Time.deltaTime);
         camPos.z = -10;
         cam.position = camPos;
     }
