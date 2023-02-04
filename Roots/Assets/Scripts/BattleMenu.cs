@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class BattleMenu : MonoBehaviour
 {
     private GameObject[] moveButtons;
     private GameObject[] battleButtons;
     private GameObject turnText;
+    private RectTransform sideMenu;
+    private GameObject[] sideButtons;
 
     private SaplingMonStats[] fightingMon;
+    private MonParty party;
 
     int attemptsToFlee = 1;
 
@@ -31,6 +35,7 @@ public class BattleMenu : MonoBehaviour
     {
         moveButtons = new GameObject[5];
         battleButtons = new GameObject[4];
+        sideButtons = new GameObject[6];
 
         battleButtons[0] = GameObject.Find("Fight Button");
         battleButtons[1] = GameObject.Find("SaplingMon Button");
@@ -42,11 +47,22 @@ public class BattleMenu : MonoBehaviour
 
         turnText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Bottom;
 
-        int loopOneMore;
+        sideMenu = GameObject.Find("Side Menu Background").GetComponent<RectTransform>();
+        sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0,0);
+
+        int loopOneMore = 0;
         for (int loop = 0; loop < 4; loop++)
         {
             loopOneMore = loop + 1;
             moveButtons[loop] = GameObject.Find("Move " + loopOneMore.ToString() + " Button");
+        }
+
+        loopOneMore = 0;
+
+        for (int loop = 0; loop < 6; loop++)
+        {
+            loopOneMore = loop + 1;
+            sideButtons[loop] = GameObject.Find("Option " + loopOneMore.ToString());
         }
 
         moveButtons[4] = GameObject.Find("Cancel Move Button");
@@ -55,6 +71,8 @@ public class BattleMenu : MonoBehaviour
         {
             moveButtons[i].SetActive(false);
         }
+
+        party = GetComponent<MonParty>();
     }
 
     public void Run()
@@ -80,6 +98,7 @@ public class BattleMenu : MonoBehaviour
         else // u failed to escape!
         {
             StartCoroutine(DisplayMessage("You couldn't get away!"));
+            attemptsToFlee++;
         }
 
 
@@ -103,11 +122,59 @@ public class BattleMenu : MonoBehaviour
     public void Items()
     {
         // Use/View any items u got here
+
+        if (sideMenu.localPosition.x <= -600)
+        {
+            sideMenu.position += new Vector3(sideMenu.sizeDelta.x, 0, 0);
+        }
+
+        else
+        {
+            sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0, 0);
+        }
     }
 
     public void SaplingMon()
     {
         // View ur mon/swap them out here
+        if (sideMenu.localPosition.x <= -600)
+        {
+            sideMenu.position += new Vector3(sideMenu.sizeDelta.x, 0, 0);
+        }
+
+        else
+        {
+            sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0, 0);
+        }
+
+        int loop = 0;
+
+        foreach(SaplingMonStats stat in party.party)
+        {
+            if (stat.GetComponent<SpriteRenderer>().sprite == null)
+            {
+                sideButtons[loop].transform.Find("Image").gameObject.SetActive(false);
+                continue;
+            }
+            sideButtons[loop].transform.Find("Image").GetComponent<Image>().sprite = stat.GetComponent<SpriteRenderer>().sprite;
+                
+            loop++;
+        }
+    }
+
+    public void ChangeMon(int t_mon)
+    {
+        if (t_mon >= party.party.Count)
+        {
+            SaplingMon();
+        }
+
+        else
+        {
+            fightingMon[0].gameObject.SetActive(false);
+            fightingMon[0] = party.party[t_mon];
+            fightingMon[0].gameObject.SetActive(true);
+        }
     }
 
     public void Cancel()
@@ -177,7 +244,7 @@ public class BattleMenu : MonoBehaviour
 
         text.text = t_message;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
 
         if (t_message == "You got away safely!" || t_message == fightingMon[1].monName + " fainted!")
         {
@@ -191,6 +258,7 @@ public class BattleMenu : MonoBehaviour
 
         if (t_fainted)
         {
+            fightingMon[1].gameObject.SetActive(false);
             StartCoroutine(DisplayMessage(fightingMon[1].monName + " fainted!"));
         }
 
