@@ -398,6 +398,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: tilemap_14
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a64a5dfdad0dee9468eed70b259ceb3a
+      internalID: -2052592108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tilemap_15
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 192
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3c36709a191beb4b861b82099b30998
+      internalID: 1952609150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tilemap_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d36ac049e5cc85a4ea4944e22498baa1
+      internalID: 850262899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -410,12 +473,15 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       tilemap_13: 1403984637
+      tilemap_14: -2052592108
+      tilemap_15: 1952609150
       tilemap_7: -24437444
       tilemap_8: 1868905191
       tilemap_5: 2096082980
       tilemap_2: 1226829582
       tilemap_3: 1047167344
       tilemap_12: -455010181
+      tilemap_16: 850262899
       tilemap_10: -1655307037
       tilemap_0: 279664296
       tilemap_6: -1777936694
