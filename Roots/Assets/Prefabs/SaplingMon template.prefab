@@ -99,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monName: SaplingMon
   HP: 1
-  Attack: 0
-  Defense: 0
+  Attack: 4
+  Defense: 4
   Speed: 2
   learnedMoves:
   - {fileID: 0}

@@ -130,14 +130,35 @@ public class BattleMenu : MonoBehaviour
     {
         // A move on the mon is used. The move is chosen by the number passed in (ranging from 1-4)
 
-        StartCoroutine(DisplayMessage(fightingMon[0].monName + " uses " + fightingMon[0].learnedMoves[0].moveName + "!"));
+        bool fainted = fightingMon[1].takeDamage(DamageCalculator(fightingMon[0].learnedMoves[whichMove], 0, 1));
+
+        StartCoroutine(DisplayMessage(fightingMon[0].monName + " uses " + fightingMon[0].learnedMoves[whichMove].moveName + "!", fainted));
+    }
+
+    int DamageCalculator(Move t_moveUsed, int attackingMon, int defendingMon)
+    {
+        float damage = 0;
+        float level = 10; // temporary - if we want, we can swap this out later
+                          // for actual saplingmon levels
+
+        // got this calculation here: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_V_onward
+
+        damage = ((2 * level) / 5.0f) + 2;
+        damage = damage * t_moveUsed.basePower;
+
+        damage = damage * (fightingMon[attackingMon].Attack /
+            fightingMon[defendingMon].Defense);
+
+        damage = (damage / 50.0f) + 2.0f;
+
+        return (int)damage;
     }
 
     public void Toggle(bool t_toggle)
     {
         for (int i = 0; i < moveButtons.Length; i++)
         {
-            moveButtons[i].SetActive(t_toggle);
+            moveButtons[i].SetActive(false);
         }
 
         for (int i = 0; i < battleButtons.Length; i++)
@@ -148,7 +169,7 @@ public class BattleMenu : MonoBehaviour
         turnText.SetActive(!t_toggle);
     }
         
-    IEnumerator DisplayMessage(string t_message)
+    IEnumerator DisplayMessage(string t_message, bool t_fainted = false)
     {
         Toggle(false);
 
@@ -156,9 +177,9 @@ public class BattleMenu : MonoBehaviour
 
         text.text = t_message;
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
 
-        if (t_message == "You got away safely!")
+        if (t_message == "You got away safely!" || t_message == fightingMon[1].monName + " fainted!")
         {
             SceneManager.LoadScene("Game"); // go back to the main game
         }
@@ -166,6 +187,11 @@ public class BattleMenu : MonoBehaviour
         else
         {
             Toggle(true);
+        }
+
+        if (t_fainted)
+        {
+            StartCoroutine(DisplayMessage(fightingMon[1].monName + " fainted!"));
         }
 
         yield return null;

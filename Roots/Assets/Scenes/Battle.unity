@@ -440,6 +440,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: SaplingMon 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[0]
+      value: 
+      objectReference: {fileID: 370460615}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[1]
+      value: 
+      objectReference: {fileID: 370460615}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[2]
+      value: 
+      objectReference: {fileID: 370460615}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[3]
+      value: 
+      objectReference: {fileID: 370460615}
     - target: {fileID: 7144392025364691992, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -516,7 +532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basePower: 35
   accuracy: 95
-  name: Tackle
+  moveName: Tackle
 --- !u!1 &381859402
 GameObject:
   m_ObjectHideFlags: 0
@@ -3064,7 +3080,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basePower: 35
   accuracy: 95
-  name: Tackle
+  moveName: Tackle
 --- !u!114 &1799863935 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}

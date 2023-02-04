@@ -32,10 +32,12 @@ public class SaplingMonStats : MonoBehaviour
 
     public Move[] learnedMoves = new Move[4];
 
-    public void takeDamage(int t_damage)
+    public bool takeDamage(int t_damage)
     {
         HP -= t_damage;
         // Might want to return some kind of way to tell
         // if the mon is "fainted"
+
+        return HP <= 0;
     }
 }
