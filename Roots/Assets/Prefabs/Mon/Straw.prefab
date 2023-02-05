@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: HP
-      value: 60
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: back
@@ -25,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 90eea3bc662a8ce4e8eddd0d24691156, type: 3}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: Speed
-      value: 124
+      value: 101
       objectReference: {fileID: 0}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: front
@@ -33,16 +33,32 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: f21ad7afd3758ad44801db81d13cd886, type: 3}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: Attack
-      value: 201
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: Defense
-      value: 124
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: monName
       value: Strawww
       objectReference: {fileID: 0}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[0]
+      value: 
+      objectReference: {fileID: 2050557061216825986}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[1]
+      value: 
+      objectReference: {fileID: 5055208406564473838}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[2]
+      value: 
+      objectReference: {fileID: 8494942703269607759}
+    - target: {fileID: 6557166595248063805, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+      propertyPath: learnedMoves.Array.data[3]
+      value: 
+      objectReference: {fileID: 8147615094681944451}
     - target: {fileID: 7144392025364691992, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -89,3 +105,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+--- !u!1 &1885996986978625201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3376910950825530910, guid: b0521937ad15b264082c2ae2bcda3794, type: 3}
+  m_PrefabInstance: {fileID: 3814930253156217007}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2050557061216825986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885996986978625201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 723121ada222abb4389decbecc1ec087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basePower: 60
+  accuracy: 100
+  moveName: Jam Punch
+--- !u!114 &5055208406564473838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885996986978625201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f377ce1b2a3904289828f435874508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basePower: 35
+  accuracy: 95
+  moveName: Tackle
+--- !u!114 &8147615094681944451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885996986978625201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd1b989ae57b39b44aa5cfb78362f3e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basePower: 80
+  accuracy: 75
+  moveName: Slam
+--- !u!114 &8494942703269607759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885996986978625201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a44c73fb1208242bd0752de21a3457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basePower: 40
+  accuracy: 100
+  moveName: Pound

@@ -5,7 +5,6 @@ using UnityEngine;
 public class BattleController : MonoBehaviour
 {
     public SaplingMonStats[] fightingMon = new SaplingMonStats[2];
-    bool thisPlayersTurn = false;
     private BattleMenu menu;
 
     private void Start()
@@ -14,18 +13,48 @@ public class BattleController : MonoBehaviour
         menu.AddMon(fightingMon);
     }
 
-    void TurnController()
+    public void TurnController()
     {
-        if (thisPlayersTurn)
+        if (!menu.thisPlayersTurn)
         {
-            menu.Toggle(true);
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    private IEnumerator EnemyTurn()
+    {
+        yield return new WaitForSeconds(2);
+
+        int whichMove = Random.Range(0, 4);
+        // A move on the mon is used. The move is chosen by the number passed in (ranging from 1-4)
+
+        //I got the accuracy formula here: https://bulbapedia.bulbagarden.net/wiki/Accuracy#Generation_V_onward
+
+        int randomNumber = Random.Range(1, 101);
+        int accuracy = fightingMon[1].learnedMoves[whichMove].accuracy;
+
+        while (menu.displayingMessage)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (randomNumber <= accuracy)
+        {
+            menu.thisPlayersTurn = true;
+            bool fainted = fightingMon[0].takeDamage(menu.DamageCalculator(fightingMon[1].learnedMoves[whichMove], 0, 1));
+
+            int faintedNum = fainted ? 1 : 0;
+
+            StartCoroutine(menu.DisplayMessage(fightingMon[1].monName + " uses " + fightingMon[1].learnedMoves[whichMove].moveName + "!", faintedNum));
+            
         }
 
         else
         {
-            menu.Toggle(false);
+            menu.thisPlayersTurn = true;
+            StartCoroutine(menu.DisplayMessage(fightingMon[1].monName + " missed!"));
         }
+
+        yield return null;
     }
-
-
 }

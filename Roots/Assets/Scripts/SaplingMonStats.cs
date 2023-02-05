@@ -43,4 +43,17 @@ public class SaplingMonStats : MonoBehaviour
 
         return HP <= 0;
     }
+
+    public void setFacingDirection(bool t_front)
+    {
+        if (t_front)
+        {
+            GetComponent<SpriteRenderer>().sprite = front;
+        }
+
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = back;
+        }
+    }
 }
