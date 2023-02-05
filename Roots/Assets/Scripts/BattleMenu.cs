@@ -11,12 +11,17 @@ public class BattleMenu : MonoBehaviour
     private GameObject[] battleButtons;
     private GameObject turnText;
     private RectTransform sideMenu;
+    bool sideOpen = false;
     private GameObject[] sideButtons;
 
     private SaplingMonStats[] fightingMon;
-    private MonParty party;
+    public MonParty party;
 
     int attemptsToFlee = 1;
+
+    public bool thisPlayersTurn = true;
+
+    public bool displayingMessage = false;
 
     public void AddMon(SaplingMonStats[] t_mon)
     {
@@ -45,11 +50,6 @@ public class BattleMenu : MonoBehaviour
         turnText = GameObject.Find("Player Reminder");
         turnText.SetActive(false);
 
-        turnText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Bottom;
-
-        sideMenu = GameObject.Find("Side Menu Background").GetComponent<RectTransform>();
-        sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0,0);
-
         int loopOneMore = 0;
         for (int loop = 0; loop < 4; loop++)
         {
@@ -73,6 +73,14 @@ public class BattleMenu : MonoBehaviour
         }
 
         party = GetComponent<MonParty>();
+
+        foreach (SaplingMonStats mon in party.party)
+        {
+            mon.setFacingDirection(false);
+        }
+
+        sideMenu = GameObject.Find("Side Menu Background").GetComponent<RectTransform>();
+        sideMenu.gameObject.SetActive(false);
     }
 
     public void Run()
@@ -101,7 +109,7 @@ public class BattleMenu : MonoBehaviour
             attemptsToFlee++;
         }
 
-
+        thisPlayersTurn = false;
     }
 
     public void Fight()
@@ -121,59 +129,81 @@ public class BattleMenu : MonoBehaviour
 
     public void Items()
     {
-        // Use/View any items u got here
+        //// Use/View any items u got here
 
-        if (sideMenu.localPosition.x <= -600)
-        {
-            sideMenu.position += new Vector3(sideMenu.sizeDelta.x, 0, 0);
-        }
+        //if (sideMenu.localPosition.x <= -600)
+        //{
+        //    sideMenu.position += new Vector3(sideMenu.sizeDelta.x, 0, 0);
+        //}
 
-        else
-        {
-            sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0, 0);
-        }
+        //else
+        //{
+        //    sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0, 0);
+        //}
     }
 
     public void SaplingMon()
     {
         // View ur mon/swap them out here
-        if (sideMenu.localPosition.x <= -600)
+        if (sideOpen)
         {
-            sideMenu.position += new Vector3(sideMenu.sizeDelta.x, 0, 0);
+            //sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0, 0);
+            sideMenu.gameObject.SetActive(false);
         }
 
         else
         {
-            sideMenu.position -= new Vector3(sideMenu.sizeDelta.x, 0, 0);
+            sideMenu.gameObject.SetActive(true);
         }
 
-        int loop = 0;
+        sideOpen = !sideOpen;
 
-        foreach(SaplingMonStats stat in party.party)
+        for (int i = 0; i < 6; i++)
         {
-            if (stat.GetComponent<SpriteRenderer>().sprite == null)
+            if (party.party.Count - 1 < i)
             {
-                sideButtons[loop].transform.Find("Image").gameObject.SetActive(false);
+                sideButtons[i].transform.Find("Image").gameObject.SetActive(false);
+                sideButtons[i].transform.Find("Text").gameObject.SetActive(false);
                 continue;
             }
-            sideButtons[loop].transform.Find("Image").GetComponent<Image>().sprite = stat.GetComponent<SpriteRenderer>().sprite;
-                
-            loop++;
+            sideButtons[i].transform.Find("Image").GetComponent<Image>().sprite = party.party[i].front;
+            sideButtons[i].transform.Find("Text").GetComponent<TextMeshProUGUI>().text = party.party[i].monName;
+
+            if (party.party[i].HP <= 0)
+            {
+                sideButtons[i].transform.Find("Image").GetComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f, 1);
+            }
+
+            else
+            {
+                sideButtons[i].transform.Find("Image").GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            }
         }
     }
 
     public void ChangeMon(int t_mon)
     {
-        if (t_mon >= party.party.Count)
-        {
-            SaplingMon();
-        }
-
-        else
+        if (t_mon < party.party.Count && party.party[t_mon].HP > 0)
         {
             fightingMon[0].gameObject.SetActive(false);
             fightingMon[0] = party.party[t_mon];
             fightingMon[0].gameObject.SetActive(true);
+
+            for (int i = 0; i < moveButtons.Length; i++)
+            {
+                if (i != 4)
+                {
+                    moveButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = fightingMon[0].learnedMoves[i].moveName;
+                }
+            }
+
+            thisPlayersTurn = false;
+
+            sideMenu.gameObject.SetActive(false);
+
+            Toggle(false);
+
+            sideOpen = !sideOpen;
         }
     }
 
@@ -197,12 +227,28 @@ public class BattleMenu : MonoBehaviour
     {
         // A move on the mon is used. The move is chosen by the number passed in (ranging from 1-4)
 
-        bool fainted = fightingMon[1].takeDamage(DamageCalculator(fightingMon[0].learnedMoves[whichMove], 0, 1));
+        //I got the accuracy formula here: https://bulbapedia.bulbagarden.net/wiki/Accuracy#Generation_V_onward
 
-        StartCoroutine(DisplayMessage(fightingMon[0].monName + " uses " + fightingMon[0].learnedMoves[whichMove].moveName + "!", fainted));
+        int randomNumber = Random.Range(1, 101);
+        int accuracy = fightingMon[0].learnedMoves[whichMove].accuracy;
+        thisPlayersTurn = false;
+
+        if (randomNumber <= accuracy)
+        {
+            bool fainted = fightingMon[1].takeDamage(DamageCalculator(fightingMon[0].learnedMoves[whichMove], 0, 1));
+
+            int faintedNum = fainted ? 2 : 0;
+
+            StartCoroutine(DisplayMessage(fightingMon[0].monName + " uses " + fightingMon[0].learnedMoves[whichMove].moveName + "!", faintedNum));
+        }   
+        
+        else
+        {
+            StartCoroutine(DisplayMessage(fightingMon[0].monName + " missed!"));
+        }
     }
 
-    int DamageCalculator(Move t_moveUsed, int attackingMon, int defendingMon)
+    public int DamageCalculator(Move t_moveUsed, int attackingMon, int defendingMon)
     {
         float damage = 0;
         float level = 10; // temporary - if we want, we can swap this out later
@@ -236,8 +282,9 @@ public class BattleMenu : MonoBehaviour
         turnText.SetActive(!t_toggle);
     }
         
-    IEnumerator DisplayMessage(string t_message, bool t_fainted = false)
+    public IEnumerator DisplayMessage(string t_message, int t_fainted = 0)
     {
+        displayingMessage = true;
         Toggle(false);
 
         TextMeshProUGUI text = turnText.GetComponent<TextMeshProUGUI>();
@@ -251,17 +298,42 @@ public class BattleMenu : MonoBehaviour
             SceneManager.LoadScene("Game"); // go back to the main game
         }
 
-        else
+        if (t_message == fightingMon[0].monName + " fainted!")
+        {
+            bool alive = false;
+
+            foreach (SaplingMonStats mon in party.party)
+            {
+                if (mon.HP > 0)
+                {
+                    alive = true;
+                    break;
+                }
+            }
+
+            if (alive)
+            {
+                SaplingMon();
+            }
+            
+            else
+            {
+                SceneManager.LoadScene("Game"); // go back to the main game
+            }
+        }
+
+        if (t_fainted != 0)
+        {
+            fightingMon[t_fainted - 1].gameObject.SetActive(false);
+            StartCoroutine(DisplayMessage(fightingMon[t_fainted - 1].monName + " fainted!"));
+        }
+
+        displayingMessage = false;
+
+        if (thisPlayersTurn && fightingMon[0].HP > 0)
         {
             Toggle(true);
         }
-
-        if (t_fainted)
-        {
-            fightingMon[1].gameObject.SetActive(false);
-            StartCoroutine(DisplayMessage(fightingMon[1].monName + " fainted!"));
-        }
-
         yield return null;
     }
 }
